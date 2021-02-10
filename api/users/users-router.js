@@ -1,14 +1,15 @@
 const express = require('express');
 
 const Users = require('./users-model.js');
-// const mw = require('../middleware/middleware.js');
+const mw = require('../middleware/middleware.js');
 
 const router = express.Router();
 
+// 1 - GET - RETURN AN ARRAY WITH ALL THE USERS
 router.get('/', (req, res) => {
-  // RETURN AN ARRAY WITH ALL THE USERS
   Users.get()
     .then(users => {
+      // Working!
       res.status(200).json(users);
     })
     .catch((error) => {
@@ -19,10 +20,11 @@ router.get('/', (req, res) => {
     });
 });
 
-// router.get('/:id', (req, res) => {
-//   // RETURN THE USER OBJECT
-//   // this needs a middleware to verify user id
-// });
+// 2 - GET - RETURN THE USER OBJECT BY ID
+router.get('/:id', mw.validateUserId, (req, res) => {
+  // Working!
+  res.status(200).json(req.user);
+});
 
 // router.post('/', (req, res) => {
 //   // RETURN THE NEWLY CREATED USER OBJECT
