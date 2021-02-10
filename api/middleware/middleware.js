@@ -2,18 +2,18 @@ const Users = require('../users/users-model.js');
 
 // Global middleware
 function logger(req, res, next) {
-  console.log(req);
   console.log(req.method, req.url, new Date().toUTCString());
   next();
 }
 
-// User middlewares
+// USER MIDDLEWARES
 const validateUserId = async (req, res, next) => {
   const { id } = req.params;
   try {
     const user = await Users.getById(id);
     if (!user) {
-      res.status(400).json({ message: `No user with id: ${id}` });
+      // Working!
+      res.status(400).json({ message: `No user with ID: ${id}` });
     } else {
       req.user = user;
       next();
@@ -22,8 +22,7 @@ const validateUserId = async (req, res, next) => {
     res.status(500).json(`Server error: ${e}`);
   }
 }
-
-// GET above returns a "name", assuming that's the required
+// -- GET above returns a "name", assuming that's the required
 const validateUser = (req, res, next) => {
   const { name } = req.body;
   if (!name) {
@@ -36,7 +35,7 @@ const validateUser = (req, res, next) => {
   }
 }
 
-// Post middleware
+// POST MIDDLEWARE
 function validatePost(req, res, next) {
   // do your magic!
 }

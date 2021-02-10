@@ -46,6 +46,7 @@ router.post('/', mw.validateUser, (req, res) => {
 router.put('/:id', mw.validateUserId, mw.validateUser, (req, res) => {
   Users.update(req.params.id, req.body)
     .then((user) => {
+      // Working!
       res.status(200).json(user);
     })
     .catch((error) => {
@@ -56,10 +57,23 @@ router.put('/:id', mw.validateUserId, mw.validateUser, (req, res) => {
     });
 });
 
-// router.delete('/:id', (req, res) => {
-//   // RETURN THE FRESHLY DELETED USER OBJECT
-//   // this needs a middleware to verify user id
-// });
+// RETURN THE FRESHLY DELETED USER OBJECT
+router.delete('/:id', mw.validateUserId, (req, res) => {
+  // this needs a middleware to verify user id
+  Users.remove(req.params.id)
+    .then(() => {
+      // Working!
+      res.status(200).json({
+        message: "User has been terminated"
+      })
+    })
+    .catch((error) => {
+      console.log(error);
+      res.status(500).json({
+        message: 'Error retrieving user data'
+      });
+    });
+});
 
 // router.get('/:id/posts', (req, res) => {
 //   // RETURN THE ARRAY OF USER POSTS
