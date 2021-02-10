@@ -2,6 +2,7 @@ const express = require('express');
 
 const Users = require('./users-model.js');
 const mw = require('../middleware/middleware.js');
+const { json } = require('express');
 
 const router = express.Router();
 
@@ -26,10 +27,21 @@ router.get('/:id', mw.validateUserId, (req, res) => {
   res.status(200).json(req.user);
 });
 
-// router.post('/', (req, res) => {
-//   // RETURN THE NEWLY CREATED USER OBJECT
-//   // this needs a middleware to check that the request body is valid
-// });
+// 3 - POST - RETURN THE NEWLY CREATED USER OBJECT
+router.post('/', mw.validateUser, (req, res) => {
+  // this needs a middleware to check that the request body is valid
+  Users.insert(req.body)
+    .then(user => {
+      // Working!
+      res.status(201).json(user);
+    })
+    .catch((error) => {
+      console.log(error);
+      res.status(500).json({
+        message: 'Error retrieving user data' 
+      });
+    });
+});
 
 // router.put('/:id', (req, res) => {
 //   // RETURN THE FRESHLY UPDATED USER OBJECT

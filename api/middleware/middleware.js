@@ -9,7 +9,6 @@ function logger(req, res, next) {
 
 // User middlewares
 const validateUserId = async (req, res, next) => {
-  // do your magic!
   const { id } = req.params;
   try {
     const user = await Users.getById(id);
@@ -24,8 +23,17 @@ const validateUserId = async (req, res, next) => {
   }
 }
 
-function validateUser(req, res, next) {
-  // do your magic!
+// GET above returns a "name", assuming that's the required
+const validateUser = (req, res, next) => {
+  const { name } = req.body;
+  if (!name) {
+    // Working!
+    res.status(400).json({
+      message: "Name is required"
+    });
+  } else {
+    next();
+  }
 }
 
 // Post middleware
