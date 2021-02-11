@@ -9,7 +9,6 @@ const router = express.Router();
 router.get('/', (req, res) => {
   Posts.get()
     .then((posts) => {
-      // Working!
       res.status(200).json(posts);
     })
     .catch((error) => {
@@ -22,7 +21,6 @@ router.get('/', (req, res) => {
 
 // 2 - GET - RETURN THE POST OBJECT
 router.get('/:id', mw.validatePostId, (req, res) => {
-  // Working!
   res.status(200).json(req.posts);
 });
 
