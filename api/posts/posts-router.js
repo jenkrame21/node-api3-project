@@ -1,14 +1,27 @@
 const express = require('express');
 
+const Posts = require('./posts-model.js');
+const mw = require('../middleware/middleware.js');
+
 const router = express.Router();
 
+// 1 - GET - RETURN AN ARRAY WITH ALL THE POSTS
 router.get('/', (req, res) => {
-  // RETURN AN ARRAY WITH ALL THE POSTS
+  Posts.get()
+    .then((posts) => {
+      res.status(200).json(posts);
+    })
+    .catch((error) => {
+      console.log(error);
+      res.status(500).json({
+        message: 'Error retrieving post data'
+      });
+    });
 });
 
-router.get('/:id', (req, res) => {
-  // RETURN THE POST OBJECT
-  // this needs a middleware to verify post id
+// 2 - GET - RETURN THE POST OBJECT
+router.get('/:id', mw.validatePostId, (req, res) => {
+  res.status(200).json(req.posts);
 });
 
-// do not forget to export the router
+module.exports = router;
